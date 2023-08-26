@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="/js/axios.min.js"></script>
+    <script type="text/javascript" src="/js/axiosFile.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.13.2.min.js"></script>
+    <script type="text/javascript" src="/js/ajaxFile.js"></script>
+</head>
+<body>
+<div>
+    <div>
+        <button onclick="axiosDownload('/download')">axios 다운로드</button>
+    </div>
+    <div>
+        <button onclick="ajaxDownload('/download')">ajax 다운로드</button>
+    </div>
+    <br><br><br><br>
+    <input name="file" type="file" id="file" accept=".xlsx, .xlsm, .xlsb, .xls"/>
+    <div>
+        <button onclick="axiosUpload()">axios 업로드</button>
+        <button onclick="axiosUpload(true)">axios 암호화된 엑셀 업로드</button>
+    </div>
+    <div>
+        <button onclick="ajaxUpload()">ajax 업로드</button>
+        <button onclick="ajaxUpload(true)">ajax 암호화된 엑셀 업로드</button>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+
+  const axiosDownload = function (url) {
+    axiosFile.download(url)
+  }
+
+  const ajaxDownload = function (url) {
+    ajaxFile.download(url)
+  }
+
+  const axiosUpload = function (isEncrypted) {
+    axiosFile.upload('/upload', getFormData(isEncrypted))
+  }
+
+  const ajaxUpload = function (isEncrypted) {
+    ajaxFile.upload('/upload', getFormData(isEncrypted))
+  }
+
+  function getFormData(isEncrypted) {
+    const fileEl = document.getElementById('file')
+    const formData = new FormData()
+    formData.append("file", fileEl.files[0])
+    formData.append("test", "file upload test")
+
+    if (isEncrypted) {
+      formData.append("password", "1234")
+    }
+
+    return formData
+  }
+</script>
